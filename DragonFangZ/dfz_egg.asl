@@ -4,6 +4,7 @@ state("dfz")
     int turnCountRAM : "mono.dll", 0x002681D0, 0x18, 0x148, 0x20, 0x38, 0x24;
     int dungeonIdRAM : "mono.dll", 0x002681D0, 0x18, 0x148, 0x20, 0x40, 0x10;
     int floorRAM     : "mono.dll", 0x002681D0, 0x18, 0x148, 0x20, 0x40, 0x18;
+    int ClearNumRAM  : "mono.dll", 0x002675E0, 0xA0, 0x998, 0x00, 0xD8, 0x10, 0xE8, 0x820;
 }
 
 startup
@@ -15,7 +16,7 @@ startup
 start
 {
     vars.totalTime    = new TimeSpan(0);
-    if (current.dungeonIdRAM > 5 && current.floorRAM == 1) {
+    if (current.dungeonIdRAM == 16 && current.floorRAM == 1) {
         return true;
     }
 }
@@ -25,14 +26,29 @@ reset
     if (current.floorRAM == 0) {
         return false;
     }
-    if ( (current.dungeonIdRAM == 1) || (current.dungeonIdRAM > 5 && current.floorRAM == 1 && old.floorRAM == 0 && current.turnCountRAM == 0) ) {
+    if ((current.dungeonIdRAM == 1)
+        || (
+            current.dungeonIdRAM == 16
+            && current.floorRAM == 1
+            && old.floorRAM == 0
+            && current.turnCountRAM == 0
+        )
+    ) {
         return true;
     }
 }
 
 split
 {
-    return (current.dungeonIdRAM > 5 && current.floorRAM > old.floorRAM && (current.floorRAM == 6 || current.floorRAM == 10));
+    return (current.dungeonIdRAM == 16
+        && (
+            (
+                current.floorRAM > old.floorRAM
+                && (current.floorRAM == 6 || current.floorRAM == 10)
+            )
+            || (current.ClearNumRAM > old.ClearNumRAM)
+        )
+    );
 }
 
 update
