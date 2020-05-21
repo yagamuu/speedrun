@@ -1059,7 +1059,7 @@
 | 計測終了            | 2:39:59 | 2:50:00 |
 
 ## 参考動画
-1. WR動画(一部古い戦略を採用しています)
+1. WR動画
     https://www.youtube.com/watch?v=XWtzznxkLg4
 1. ノーリセットプレイ動画(ゴールデンウィーク突発アークザラッドRTAリレー)
     https://www.youtube.com/watch?v=fgUV8ogpK2s
