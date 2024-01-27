@@ -1,15 +1,10 @@
 state("dfz")
 {
-    int gameTimeRAM  : "mono.dll", 0x002681D0, 0x18, 0x148, 0x20, 0x38, 0x20;   // ゲーム内タイム
-    int turnCountRAM : "mono.dll", 0x002681D0, 0x18, 0x148, 0x20, 0x38, 0x24;   // ターン数
-    int dungeonIdRAM : "mono.dll", 0x002681D0, 0x18, 0x148, 0x20, 0x40, 0x10;   // ダンジョンID
-    int floorRAM     : "mono.dll", 0x002681D0, 0x18, 0x148, 0x20, 0x40, 0x18;   // 現在階層
-    int cradleClearNumRAM  : "mono.dll", 0x00268180, 0x100, 0x138, 0x344, 0x40, 0xE0, 0x10, 0x48, 0x18;  // ゆりかごクリア回数
-    int abyssClearNumRAM : "mono.dll", 0x00268180, 0x100, 0x138, 0x344, 0x40, 0xE0, 0x10, 0x60, 0x18;  // 深淵クリア回数
-    int fangsClearNumRAM : "mono.dll", 0x00268180, 0x100, 0x138, 0x344, 0x40, 0xE0, 0x10, 0x70, 0x18;  // 牙クリア回数
-    int hollowClearNumRAM  : "mono.dll", 0x00268180, 0x100, 0x138, 0x344, 0x40, 0xE0, 0x10, 0x58, 0x18;  // 奈落クリア回数
-    int friendshipClearNumRAM  : "mono.dll", 0x00268180, 0x100, 0x138, 0x344, 0x40, 0xE0, 0x10, 0x68, 0x18;  // 友絆クリア回数
-    int eggClearNumRAM  : "mono.dll", 0x00268180, 0x100, 0x138, 0x344, 0x40, 0xE0, 0x10, 0x40, 0x18;  // たまごクリア回数
+    int gameTimeRAM  : "UnityPlayer.dll", 0x01464448, 0x48, 0xB8, 0x80, 0x58, 0x38, 0x20;   // ゲーム内タイム
+    int turnCountRAM : "UnityPlayer.dll", 0x01464448, 0x48, 0xB8, 0x80, 0x58, 0x38, 0x24;   // ターン数
+    int dungeonIdRAM : "UnityPlayer.dll", 0x013CE1F0, 0x198, 0xB8, 0x80, 0x58, 0x40, 0x10;   // ダンジョンID
+    int floorRAM     : "UnityPlayer.dll", 0x013CE1F0, 0x198, 0xB8, 0x80, 0x58, 0x40, 0x18;   // 現在階層
+    string128 isDungeonClear : "mono.dll", 0x00264110, 0x320, 0x48, 0x10, 0x28, 0x10, 0x30, 0x14;   // ダンジョンクリア画面判定
 }
 
 startup
@@ -199,7 +194,7 @@ split
 
     // 竜のゆりかご
     if (settings["cradle_auto_split_dungeon_clear"]) {
-        if (current.cradleClearNumRAM > old.cradleClearNumRAM && old.cradleClearNumRAM != 0) {
+        if (current.isDungeonClear == "?Kind=Clear" && current.floorRAM == 30 && current.dungeonIdRAM == vars.cradleDungeonId) {
             return true;
         }
     }
@@ -217,7 +212,7 @@ split
 
     // 竜の深淵
     if (settings["abyss_auto_split_dungeon_clear"]) {
-        if (current.abyssClearNumRAM > old.abyssClearNumRAM && old.abyssClearNumRAM != 0) {
+       if (current.isDungeonClear == "?Kind=Clear" && current.floorRAM == 50 && current.dungeonIdRAM == vars.abyssDungeonId) {
             return true;
         }
     }
@@ -235,7 +230,7 @@ split
 
     // 牙の洞窟
     if (settings["fangs_auto_split_dungeon_clear"]) {
-        if (current.fangsClearNumRAM > old.fangsClearNumRAM && old.fangsClearNumRAM != 0) {
+        if (current.isDungeonClear == "?Kind=Clear" && current.floorRAM == 30 && current.dungeonIdRAM == vars.fangsDungeonId) {
             return true;
         }
     }
@@ -253,7 +248,7 @@ split
 
     // 奈落の修練場
     if (settings["hollow_auto_split_dungeon_clear"]) {
-        if (current.hollowClearNumRAM > old.hollowClearNumRAM && old.hollowClearNumRAM != 0) {
+        if (current.isDungeonClear == "?Kind=Clear" && current.floorRAM == 60 && current.dungeonIdRAM == vars.hollowDungeonId) {
             return true;
         }
     }
@@ -271,7 +266,7 @@ split
 
     // 友絆の迷宮
     if (settings["friendship_auto_split_dungeon_clear"]) {
-        if (current.friendshipClearNumRAM > old.friendshipClearNumRAM && old.friendshipClearNumRAM != 0) {
+        if (current.isDungeonClear == "?Kind=Clear" && current.floorRAM == 30 && current.dungeonIdRAM == vars.friendshipDungeonId) {
             return true;
         }
     }
@@ -289,7 +284,7 @@ split
     
     // 竜のたまご
     if (settings["egg_auto_split_dungeon_clear"]) {
-        if (current.eggClearNumRAM > old.eggClearNumRAM && old.eggClearNumRAM != 0) {
+        if (current.isDungeonClear == "?Kind=Clear" && current.floorRAM == 10 && current.dungeonIdRAM == vars.eggDungeonId) {
             return true;
         }
     }
