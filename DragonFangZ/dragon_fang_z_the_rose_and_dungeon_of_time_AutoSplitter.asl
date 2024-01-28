@@ -4,7 +4,9 @@ state("dfz")
     int turnCountRAM : "UnityPlayer.dll", 0x01464448, 0x48, 0xB8, 0x80, 0x58, 0x38, 0x24;   // ターン数
     int dungeonIdRAM : "UnityPlayer.dll", 0x013CE1F0, 0x198, 0xB8, 0x80, 0x58, 0x40, 0x10;   // ダンジョンID
     int floorRAM     : "UnityPlayer.dll", 0x013CE1F0, 0x198, 0xB8, 0x80, 0x58, 0x40, 0x18;   // 現在階層
-    string128 isDungeonClear : "mono.dll", 0x00264110, 0x320, 0x48, 0x10, 0x28, 0x10, 0x30, 0x14;   // ダンジョンクリア画面判定
+    string128 isDungeonClear : "mono.dll", 0x00264110, 0x320, 0x48, 0x10, 0x28, 0x10, 0x30, 0x14;   // ダンジョンクリア画面判定1
+    string128 isDungeonClear2 : "mono.dll", 0x00264110, 0x320, 0x48, 0x10, 0x30, 0x10, 0x30, 0x14;   // ダンジョンクリア画面判定2
+    string128 isDungeonClear3 : "mono.dll", 0x00264110, 0x320, 0x48, 0x10, 0x38, 0x10, 0x30, 0x14;   // ダンジョンクリア画面判定3
 }
 
 startup
@@ -185,6 +187,13 @@ reset
         ) {
             return true;
         }
+        if (current.dungeonIdRAM != vars.startDungeonId
+            && current.floorRAM == 1
+            && current.turnCountRAM < old.turnCountRAM  
+            && current.gameTimeRAM < old.gameTimeRAM  
+        ) {
+            return true;
+        }
     }
 }
 
@@ -194,7 +203,8 @@ split
 
     // 竜のゆりかご
     if (settings["cradle_auto_split_dungeon_clear"]) {
-        if (current.isDungeonClear == "?Kind=Clear" && current.floorRAM == 30 && current.dungeonIdRAM == vars.cradleDungeonId) {
+        if (current.floorRAM == 30 && current.dungeonIdRAM == vars.cradleDungeonId) {
+            if (current.isDungeonClear == "?Kind=Clear" || current.isDungeonClear2 == "?Kind=Clear" || current.isDungeonClear3 == "?Kind=Clear")
             return true;
         }
     }
@@ -212,8 +222,10 @@ split
 
     // 竜の深淵
     if (settings["abyss_auto_split_dungeon_clear"]) {
-       if (current.isDungeonClear == "?Kind=Clear" && current.floorRAM == 50 && current.dungeonIdRAM == vars.abyssDungeonId) {
-            return true;
+       if (current.floorRAM == 50 && current.dungeonIdRAM == vars.abyssDungeonId) {
+            if (current.isDungeonClear == "?Kind=Clear" || current.isDungeonClear2 == "?Kind=Clear" || current.isDungeonClear3 == "?Kind=Clear") {
+                return true;
+            }
         }
     }
     if (current.dungeonIdRAM == vars.abyssDungeonId) {
@@ -230,8 +242,10 @@ split
 
     // 牙の洞窟
     if (settings["fangs_auto_split_dungeon_clear"]) {
-        if (current.isDungeonClear == "?Kind=Clear" && current.floorRAM == 30 && current.dungeonIdRAM == vars.fangsDungeonId) {
-            return true;
+        if (current.floorRAM == 30 && current.dungeonIdRAM == vars.fangsDungeonId) {
+            if (current.isDungeonClear == "?Kind=Clear" || current.isDungeonClear2 == "?Kind=Clear" || current.isDungeonClear3 == "?Kind=Clear") {
+                return true;
+            }
         }
     }
     if (current.dungeonIdRAM == vars.fangsDungeonId) {
@@ -248,8 +262,10 @@ split
 
     // 奈落の修練場
     if (settings["hollow_auto_split_dungeon_clear"]) {
-        if (current.isDungeonClear == "?Kind=Clear" && current.floorRAM == 60 && current.dungeonIdRAM == vars.hollowDungeonId) {
-            return true;
+        if (current.floorRAM == 60 && current.dungeonIdRAM == vars.hollowDungeonId) {
+            if (current.isDungeonClear == "?Kind=Clear" || current.isDungeonClear2 == "?Kind=Clear" || current.isDungeonClear3 == "?Kind=Clear") {
+                return true;
+            }
         }
     }
     if (current.dungeonIdRAM == vars.hollowDungeonId) {
@@ -266,8 +282,10 @@ split
 
     // 友絆の迷宮
     if (settings["friendship_auto_split_dungeon_clear"]) {
-        if (current.isDungeonClear == "?Kind=Clear" && current.floorRAM == 30 && current.dungeonIdRAM == vars.friendshipDungeonId) {
-            return true;
+        if (current.floorRAM == 30 && current.dungeonIdRAM == vars.friendshipDungeonId) {
+            if (current.isDungeonClear == "?Kind=Clear" || current.isDungeonClear2 == "?Kind=Clear" || current.isDungeonClear3 == "?Kind=Clear") {
+                return true;
+            }
         }
     }
     if (current.dungeonIdRAM == vars.friendshipDungeonId) {
@@ -284,8 +302,10 @@ split
     
     // 竜のたまご
     if (settings["egg_auto_split_dungeon_clear"]) {
-        if (current.isDungeonClear == "?Kind=Clear" && current.floorRAM == 10 && current.dungeonIdRAM == vars.eggDungeonId) {
-            return true;
+        if (current.floorRAM == 10 && current.dungeonIdRAM == vars.eggDungeonId) {
+            if (current.isDungeonClear == "?Kind=Clear" || current.isDungeonClear2 == "?Kind=Clear" || current.isDungeonClear3 == "?Kind=Clear") {
+                return true;
+            }
         }
     }
     if (current.dungeonIdRAM == vars.eggDungeonId) {
